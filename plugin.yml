@@ -1,0 +1,11 @@
+name: CopperMod
+main: com.copperpot.coppermod.CopperMod
+version: 0.5
+commands:
+  farton:
+    description: Fart on someone or everyone.
+    aliases: [fart, toot]
+    usage: /<command> [player]
+  autolocate:
+    description: Get the current location information of target player.
+    usage: /<command> [player]
