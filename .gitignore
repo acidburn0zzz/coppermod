@@ -1,4 +1,5 @@
 *.iml
 .idea
 .settings
-bin/
+bin
+*.DS_Store
