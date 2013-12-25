@@ -1,5 +1,6 @@
 package com.copperpot.coppermod;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
@@ -18,10 +19,8 @@ public class AutoLocateExecutor implements CommandExecutor {
 
         Biome biome = target.getWorld().getBiome(targetLocation.getBlockX(), targetLocation.getBlockZ());
 
-        actor.sendMessage(String.format("Attempting to locate %s", target.getName()));
-        actor.sendMessage(String.format("Target located ( X:%.2f, Y:%.2f, Z:%.2f )", targetLocation.getX(), targetLocation.getY(), targetLocation.getZ()));
-        actor.sendMessage(String.format("Target is in the %s world.", targetLocation.getWorld()));
-        actor.sendMessage(String.format("Target is in a %s biome.", biome.toString()));
+        actor.sendMessage(String.format("%s located in %s ( X:%.2f, Y:%.2f, Z:%.2f )", target.getName(), targetLocation.getWorld().getName(), targetLocation.getX(), targetLocation.getY(), targetLocation.getZ()));
+        actor.sendMessage(String.format("They are in a %s.", StringUtils.capitalize(biome.toString().replace("_", ""))));
 
         return true;
     }

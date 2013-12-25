@@ -1,6 +1,6 @@
 name: CopperMod
 main: com.copperpot.coppermod.CopperMod
-version: 0.5
+version: 1
 commands:
   farton:
     description: Fart on someone or everyone.
