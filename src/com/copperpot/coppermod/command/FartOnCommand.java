@@ -36,7 +36,7 @@ public class FartOnCommand extends BaseCommand {
         if (args.length == 0) {
             List<Player> targets = instigator.getWorld().getPlayers();
             fartOn(targets, instigator);
-            earnedScore = targets.size();
+            earnedScore = targets.size() - 1; // dont count yourself
         } else {
             fartOn(Bukkit.getServer().getPlayer(args[0]), instigator);
         }
@@ -59,7 +59,7 @@ public class FartOnCommand extends BaseCommand {
     private void fartOn(List<Player> players, Player instigator) {
         broadcastFart(String.format(Strings.FART_EVERYONE, instigator.getName(), Strings.getFartTerm()));
         for (Player victim : players) {
-            smite(victim);
+            smite(victim, instigator.getUniqueId().equals(victim.getUniqueId()));
         }
     }
 
@@ -70,14 +70,14 @@ public class FartOnCommand extends BaseCommand {
      */
     private void fartOn(Player victim, Player instigator) {
         broadcastFart(String.format(Strings.FART_ONE, instigator.getName(), Strings.getFartTerm(), victim.getName()));
-        smite(victim);
+        smite(victim, instigator.getUniqueId().equals(victim.getUniqueId()));
     }
 
     /**
      * Smite someone with a fart
      * @param victim
      */
-    private void smite(Player victim) {
+    private void smite(Player victim, boolean isSelf) {
         float pitch = 0 + (2.0f - 0) * new Random().nextFloat();
 
         World world = victim.getWorld();
@@ -89,7 +89,7 @@ public class FartOnCommand extends BaseCommand {
         addFartOnEffect(victim);
 
         try {
-            plugin.updateDeathsForPlayer(victim, 1);
+            plugin.updateDeathsForPlayer(victim, (isSelf ? 0 : 1));
         } catch (Exception e) {
             Logger.getLogger("Minecraft").log(Level.INFO, e.getMessage());
         }
