@@ -28,7 +28,11 @@ public class Scoreboard extends HashMap<String, PlayerScore> {
 
         for (String key : scoreboard.keySet()) {
             PlayerScore playerScore = scoreboard.get(key);
-            rtn = rtn + String.format(Strings.SCORE_PLAYER, key, playerScore.getKills(), playerScore.getDeaths());
+            rtn = rtn + String.format(Strings.SCORE_PLAYER,
+                    key,
+                    playerScore.getKills(),
+                    playerScore.getDeaths(),
+                    playerScore.getRatio());
         }
 
         return rtn;

@@ -24,7 +24,11 @@ public class FartScoreCommand extends BaseCommand {
 
             if (target != null) {
                 PlayerScore playerScore = plugin.getScoreForPlayer(target);
-                msg = String.format(Strings.SCORE_PLAYER, target.getName(), playerScore.getKills(), playerScore.getDeaths());
+                msg = String.format(Strings.SCORE_PLAYER,
+                        target.getName(),
+                        playerScore.getKills(),
+                        playerScore.getDeaths(),
+                        playerScore.getRatio());
             } else {
                 msg = Strings.ERR_NO_PLAYER;
             }

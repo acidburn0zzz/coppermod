@@ -38,4 +38,8 @@ public class PlayerScore {
     public void addDeaths(int amount) {
         this.deaths += amount;
     }
+
+    public double getRatio() {
+        return  this.kills / this.deaths;
+    }
 }
