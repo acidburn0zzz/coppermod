@@ -40,6 +40,10 @@ public class PlayerScore {
     }
 
     public double getRatio() {
+        if (this.deaths < 1) {
+            return this.kills;
+        }
+
         return  this.kills / this.deaths;
     }
 }

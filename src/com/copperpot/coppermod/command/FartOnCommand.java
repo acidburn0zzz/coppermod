@@ -39,6 +39,9 @@ public class FartOnCommand extends BaseCommand {
             earnedScore = targets.size() - 1; // dont count yourself
         } else {
             fartOn(Bukkit.getServer().getPlayer(args[0]), instigator);
+            if (instigator.getName().equalsIgnoreCase(args[0])) {
+                earnedScore = 0;
+            }
         }
 
         try {
