@@ -23,12 +23,8 @@ public class FartScoreCommand extends BaseCommand {
             Player target = Bukkit.getServer().getPlayer(args[0]);
 
             if (target != null) {
-                PlayerScore playerScore = plugin.getScoreForPlayer(target);
-                msg = String.format(Strings.SCORE_PLAYER,
-                        target.getName(),
-                        playerScore.getKills(),
-                        playerScore.getDeaths(),
-                        playerScore.getRatio());
+                PlayerScore playerScore = plugin.getScoreboard().getByPlayer(target);
+                msg = playerScore.toString();
             } else {
                 msg = Strings.ERR_NO_PLAYER;
             }

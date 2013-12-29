@@ -33,20 +33,26 @@ public class FartOnCommand extends BaseCommand {
         Player instigator = (Player) sender;
         int earnedScore = 1;
 
+        // No player specified so fart on everyone
         if (args.length == 0) {
             List<Player> targets = instigator.getWorld().getPlayers();
             fartOn(targets, instigator);
             earnedScore = targets.size() - 1; // dont count yourself
         } else {
-            fartOn(Bukkit.getServer().getPlayer(args[0]), instigator);
-            if (instigator.getName().equalsIgnoreCase(args[0])) {
-                earnedScore = 0;
+            Player target = Bukkit.getServer().getPlayer(args[0]);
+
+            if (target != null) {
+                fartOn(target, instigator);
+
+                // dont allow suicides to increase kill count
+                if (instigator.getUniqueId().equals(target.getUniqueId())) {
+                    earnedScore = 0;
+                }
             }
         }
 
         try {
-            Logger.getLogger("Minecraft").log(Level.INFO, "Attempting to update score for player with " + earnedScore);
-            plugin.updateScoreForPlayer(instigator, earnedScore);
+            plugin.getScoreboard().getByPlayer(instigator).incrementKills(earnedScore);
         } catch (Exception e) {
             Logger.getLogger("Minecraft").log(Level.INFO, e.toString());
         }
@@ -92,7 +98,7 @@ public class FartOnCommand extends BaseCommand {
         addFartOnEffect(victim);
 
         try {
-            plugin.updateDeathsForPlayer(victim, (isSelf ? 0 : 1));
+            plugin.getScoreboard().getByPlayer(victim).incrementDeaths((isSelf ? 0 : 1));
         } catch (Exception e) {
             Logger.getLogger("Minecraft").log(Level.INFO, e.getMessage());
         }

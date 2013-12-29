@@ -1,5 +1,6 @@
 package com.copperpot.coppermod.data;
 
+import com.copperpot.coppermod.utils.Strings;
 import org.bukkit.entity.Player;
 
 public class PlayerScore {
@@ -11,31 +12,29 @@ public class PlayerScore {
         this.player = player;
     }
 
-    public Integer getKills() {
-        return kills;
+    @Override
+    public String toString() {
+        return String.format(Strings.SCORE_PLAYER,
+                player.getName(),
+                getKills(),
+                getDeaths(),
+                getRatio()
+        );
     }
 
-    public void setKills(Integer kills) {
-        this.kills = kills;
+    public Integer getKills() {
+        return kills;
     }
 
     public Integer getDeaths() {
         return deaths;
     }
 
-    public void setDeaths(Integer deaths) {
-        this.deaths = deaths;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void addKills(int amount) {
+    public void incrementKills(int amount) {
         this.kills += amount;
     }
 
-    public void addDeaths(int amount) {
+    public void incrementDeaths(int amount) {
         this.deaths += amount;
     }
 
