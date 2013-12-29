@@ -39,6 +39,9 @@ public class Scoreboard extends HashMap<String, PlayerScore> {
             return scoreboard.get(player.getName());
         }
 
-        return new PlayerScore(player);
+        PlayerScore playerScore = new PlayerScore(player);
+        scoreboard.put(player.getName(), playerScore);
+
+        return playerScore;
     }
 }
