@@ -12,6 +12,6 @@ public abstract class Strings {
     );
 
     public static String getFartTerm() {
-        return FART_TERMS.get(new Random().nextInt(FART_TERMS.size()));
+        return FART_TERMS.get(new Random().nextInt(FART_TERMS.size() - 1));
     }
 }

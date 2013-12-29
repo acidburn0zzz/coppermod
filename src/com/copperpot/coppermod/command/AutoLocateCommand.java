@@ -1,15 +1,20 @@
-package com.copperpot.coppermod;
+package com.copperpot.coppermod.command;
 
+import com.copperpot.coppermod.CopperMod;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class AutoLocateExecutor implements CommandExecutor {
+public class AutoLocateCommand extends BaseCommand {
+
+    public AutoLocateCommand(CopperMod plugin) {
+        super(plugin);
+    }
+
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 

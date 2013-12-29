@@ -1,16 +1,24 @@
-package com.copperpot.coppermod;
+package com.copperpot.coppermod.command;
 
+import com.copperpot.coppermod.CopperMod;
+import com.copperpot.coppermod.effects.FartOnEffect;
 import com.copperpot.coppermod.utils.Strings;
 import org.bukkit.*;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class FartOnExecutor implements CommandExecutor {
+public class FartOnCommand extends BaseCommand {
+
+    public FartOnCommand(CopperMod plugin) {
+        super(plugin);
+    }
 
     /**
      * Handle the /farton command
@@ -30,6 +38,11 @@ public class FartOnExecutor implements CommandExecutor {
             fartOn(Bukkit.getServer().getPlayer(args[0]), instigator);
         }
 
+        try {
+            plugin.updateScoreForPlayer(instigator, 1);
+        } catch (Exception e) {
+            Logger.getLogger("Minecraft").log(Level.INFO, e.getMessage());
+        }
         return true;
     }
 
@@ -67,6 +80,8 @@ public class FartOnExecutor implements CommandExecutor {
 
         world.strikeLightningEffect(location);
         world.playSound(location, Sound.GHAST_SCREAM2, 100, pitch);
+
+        addFartOnEffect(victim);
     }
 
     /**
@@ -75,5 +90,13 @@ public class FartOnExecutor implements CommandExecutor {
      */
     private void broadcastFart(String msg) {
         Bukkit.broadcastMessage(ChatColor.GREEN + msg);
+    }
+
+    /**
+     * Add a farted on status effect.
+     * @param player
+     */
+    private void addFartOnEffect(Player player) {
+        player.addPotionEffect(new FartOnEffect(PotionEffectType.CONFUSION, 100, 0, true), true);
     }
 }
