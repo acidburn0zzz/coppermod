@@ -1,6 +1,8 @@
 package com.copperpot.coppermod.data;
 
 import com.copperpot.coppermod.CopperMod;
+import com.copperpot.coppermod.utils.Strings;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
@@ -26,9 +28,17 @@ public class Scoreboard extends HashMap<String, PlayerScore> {
 
         for (String key : scoreboard.keySet()) {
             PlayerScore playerScore = scoreboard.get(key);
-            rtn = rtn + String.format("%s ~> %i kills | %i deaths \n", key, playerScore.getKills(), playerScore.getDeaths());
+            rtn = rtn + String.format(Strings.SCORE_PLAYER, key, playerScore.getKills(), playerScore.getDeaths());
         }
 
         return rtn;
+    }
+
+    public PlayerScore getByPlayer(Player player) {
+        if (scoreboard.get(player.getName()) != null) {
+            return scoreboard.get(player.getName());
+        }
+
+        return new PlayerScore(player);
     }
 }

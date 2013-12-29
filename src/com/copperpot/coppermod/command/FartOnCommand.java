@@ -42,9 +42,10 @@ public class FartOnCommand extends BaseCommand {
         }
 
         try {
+            Logger.getLogger("Minecraft").log(Level.INFO, "Attempting to update score for player with " + earnedScore);
             plugin.updateScoreForPlayer(instigator, earnedScore);
         } catch (Exception e) {
-            Logger.getLogger("Minecraft").log(Level.INFO, e.getMessage());
+            Logger.getLogger("Minecraft").log(Level.INFO, e.toString());
         }
 
         return true;

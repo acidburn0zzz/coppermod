@@ -32,26 +32,18 @@ public final class CopperMod extends JavaPlugin {
     }
 
     public PlayerScore getScoreForPlayer(Player instigator) {
-        PlayerScore score;
-
-        if (scoreboard.get(instigator.getName()) != null) {
-            score = scoreboard.get(instigator.getName());
-        } else {
-            score = new PlayerScore(instigator);
-        }
-
-        return score;
+        return scoreboard.getByPlayer(instigator);
     }
 
     public void updateScoreForPlayer(Player player, int amount) {
-        PlayerScore currentScore = scoreboard.get(player.getName());
+        PlayerScore currentScore = scoreboard.getByPlayer(player);
         currentScore.addKills(amount);
 
         scoreboard.put(player.getName(), currentScore);
     }
 
     public void updateDeathsForPlayer(Player victim, int amount) {
-        PlayerScore currentScore = scoreboard.get(victim.getName());
+        PlayerScore currentScore = scoreboard.getByPlayer(victim);
         currentScore.addDeaths(amount);
 
         scoreboard.put(victim.getName(), currentScore);
