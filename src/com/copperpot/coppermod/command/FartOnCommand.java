@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -30,7 +31,7 @@ public class FartOnCommand extends BaseCommand {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         Player instigator = (Player) sender;
-        List<Player> targets = instigator.getWorld().getPlayers();
+        List<Player> targets = new ArrayList<Player>();
 
         // No player specified so fart on everyone
         if (args.length > 0) {
@@ -38,6 +39,8 @@ public class FartOnCommand extends BaseCommand {
             if (target != null) {
                 targets.add(target);
             }
+        } else {
+            targets = instigator.getWorld().getPlayers();
         }
 
         fartOn(targets, instigator);
