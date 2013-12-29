@@ -5,6 +5,7 @@ import com.copperpot.coppermod.command.FartOnCommand;
 import com.copperpot.coppermod.command.FartScoreCommand;
 import com.copperpot.coppermod.data.PlayerScore;
 import com.copperpot.coppermod.data.Scoreboard;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,6 +23,11 @@ public final class CopperMod extends JavaPlugin {
     @Override
     public void onEnable() {
         scoreboard = new Scoreboard(this);
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            scoreboard.put(player.getName(), new PlayerScore(player));
+        }
+        
         getCommand("farton").setExecutor(new FartOnCommand(this));
         getCommand("fartscore").setExecutor(new FartScoreCommand(this));
         getCommand("autolocate").setExecutor(new AutoLocateCommand(this));
