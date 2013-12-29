@@ -2,6 +2,7 @@ package com.copperpot.coppermod.command;
 
 import com.copperpot.coppermod.CopperMod;
 import com.copperpot.coppermod.effects.FartOnEffect;
+import com.copperpot.coppermod.event.FartOnEvent;
 import com.copperpot.coppermod.utils.Strings;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -11,8 +12,6 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class FartOnCommand extends BaseCommand {
 
@@ -31,62 +30,44 @@ public class FartOnCommand extends BaseCommand {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         Player instigator = (Player) sender;
-        int earnedScore = 1;
+        List<Player> targets = instigator.getWorld().getPlayers();
 
         // No player specified so fart on everyone
-        if (args.length == 0) {
-            List<Player> targets = instigator.getWorld().getPlayers();
-            fartOn(targets, instigator);
-            earnedScore = targets.size() - 1; // dont count yourself
-        } else {
+        if (args.length > 0) {
             Player target = Bukkit.getServer().getPlayer(args[0]);
-
             if (target != null) {
-                fartOn(target, instigator);
-
-                // dont allow suicides to increase kill count
-                if (instigator.getUniqueId().equals(target.getUniqueId())) {
-                    earnedScore = 0;
-                }
+                targets.add(target);
             }
         }
 
-        try {
-            plugin.getScoreboard().getByPlayer(instigator).incrementKills(earnedScore);
-        } catch (Exception e) {
-            Logger.getLogger("Minecraft").log(Level.INFO, e.toString());
-        }
+        fartOn(targets, instigator);
 
         return true;
     }
 
     /**
      * Fart on multiple players
-     * @param players
+     * @param victims
      * @param instigator
      */
-    private void fartOn(List<Player> players, Player instigator) {
-        broadcastFart(String.format(Strings.FART_EVERYONE, instigator.getName(), Strings.getFartTerm()));
-        for (Player victim : players) {
-            smite(victim, instigator.getUniqueId().equals(victim.getUniqueId()));
+    private void fartOn(List<Player> victims, Player instigator) {
+        if (victims.size() > 1) {
+            broadcastFart(String.format(Strings.FART_EVERYONE, instigator.getName(), Strings.getFartTerm()));
+        } else {
+            broadcastFart(String.format(Strings.FART_ONE, instigator.getName(), Strings.getFartTerm(), victims.get(0).getName()));
         }
-    }
 
-    /**
-     * Fart on a single player
-     * @param victim
-     * @param instigator
-     */
-    private void fartOn(Player victim, Player instigator) {
-        broadcastFart(String.format(Strings.FART_ONE, instigator.getName(), Strings.getFartTerm(), victim.getName()));
-        smite(victim, instigator.getUniqueId().equals(victim.getUniqueId()));
+        for (Player victim : victims) {
+            smite(victim);
+            Bukkit.getServer().getPluginManager().callEvent(new FartOnEvent(instigator, victim));
+        }
     }
 
     /**
      * Smite someone with a fart
      * @param victim
      */
-    private void smite(Player victim, boolean isSelf) {
+    private void smite(Player victim) {
         float pitch = 0 + (2.0f - 0) * new Random().nextFloat();
 
         World world = victim.getWorld();
@@ -96,12 +77,6 @@ public class FartOnCommand extends BaseCommand {
         world.playSound(location, Sound.GHAST_SCREAM2, 100, pitch);
 
         addFartOnEffect(victim);
-
-        try {
-            plugin.getScoreboard().getByPlayer(victim).incrementDeaths((isSelf ? 0 : 1));
-        } catch (Exception e) {
-            Logger.getLogger("Minecraft").log(Level.INFO, e.getMessage());
-        }
     }
 
     /**

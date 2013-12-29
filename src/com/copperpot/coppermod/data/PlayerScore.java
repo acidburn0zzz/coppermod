@@ -7,6 +7,7 @@ public class PlayerScore {
     private Player player;
     private Integer kills = 0;
     private Integer deaths = 0;
+    private Integer streakCounter = 0;
 
     public PlayerScore (Player player) {
         this.player = player;
@@ -30,6 +31,10 @@ public class PlayerScore {
         return deaths;
     }
 
+    public Integer getStreakCounter() {
+        return streakCounter;
+    }
+
     public void incrementKills(int amount) {
         this.kills += amount;
     }
@@ -44,5 +49,13 @@ public class PlayerScore {
         }
 
         return  this.kills / this.deaths;
+    }
+
+    public void incrementStreakcounter(int amount) {
+        this.streakCounter += amount;
+    }
+
+    public void resetStreakCounter() {
+        this.streakCounter = 0;
     }
 }
