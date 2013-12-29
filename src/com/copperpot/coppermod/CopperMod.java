@@ -3,6 +3,7 @@ package com.copperpot.coppermod;
 import com.copperpot.coppermod.command.AutoLocateCommand;
 import com.copperpot.coppermod.command.FartOnCommand;
 import com.copperpot.coppermod.command.FartScoreCommand;
+import com.copperpot.coppermod.data.PlayerScore;
 import com.copperpot.coppermod.data.Scoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,17 +31,29 @@ public final class CopperMod extends JavaPlugin {
         return scoreboard;
     }
 
-    public Integer getScoreForPlayer(Player instigator) {
-        Integer score = 0;
+    public PlayerScore getScoreForPlayer(Player instigator) {
+        PlayerScore score;
 
         if (scoreboard.get(instigator.getName()) != null) {
             score = scoreboard.get(instigator.getName());
+        } else {
+            score = new PlayerScore(instigator);
         }
 
         return score;
     }
 
     public void updateScoreForPlayer(Player player, int amount) {
-        scoreboard.put(player.getName(), getScoreForPlayer(player) + amount);
+        PlayerScore currentScore = scoreboard.get(player.getName());
+        currentScore.addKills(amount);
+
+        scoreboard.put(player.getName(), currentScore);
+    }
+
+    public void updateDeathsForPlayer(Player victim, int amount) {
+        PlayerScore currentScore = scoreboard.get(victim.getName());
+        currentScore.addDeaths(amount);
+
+        scoreboard.put(victim.getName(), currentScore);
     }
 }

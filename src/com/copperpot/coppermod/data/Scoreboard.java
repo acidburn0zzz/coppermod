@@ -3,7 +3,6 @@ package com.copperpot.coppermod.data;
 import com.copperpot.coppermod.CopperMod;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,21 +11,22 @@ import java.util.Map;
  * Time: 12:26 AM
  * To change this template use File | Settings | File Templates.
  */
-public class Scoreboard extends HashMap<String, Integer> {
+public class Scoreboard extends HashMap<String, PlayerScore> {
     private CopperMod plugin;
-    private HashMap<String, Integer> scoreboard;
+    private HashMap<String, PlayerScore> scoreboard;
 
     public Scoreboard (CopperMod plugin) {
         this.plugin = plugin;
-        this.scoreboard = new HashMap<String, Integer>();
+        this.scoreboard = new HashMap<String, PlayerScore>();
     }
 
     @Override
     public String toString() {
         String rtn = "";
 
-        for (Map.Entry<String, Integer> entry : scoreboard.entrySet()) {
-            rtn = rtn + String.format("%s ~> %s farts! \n", entry.getKey(), entry.getValue());
+        for (String key : scoreboard.keySet()) {
+            PlayerScore playerScore = scoreboard.get(key);
+            rtn = rtn + String.format("%s ~> %i kills | %i deaths \n", key, playerScore.getKills(), playerScore.getDeaths());
         }
 
         return rtn;

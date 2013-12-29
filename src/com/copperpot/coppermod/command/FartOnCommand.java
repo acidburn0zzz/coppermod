@@ -31,18 +31,22 @@ public class FartOnCommand extends BaseCommand {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         Player instigator = (Player) sender;
+        int earnedScore = 1;
 
         if (args.length == 0) {
-            fartOn(instigator.getWorld().getPlayers(), instigator);
+            List<Player> targets = instigator.getWorld().getPlayers();
+            fartOn(targets, instigator);
+            earnedScore = targets.size();
         } else {
             fartOn(Bukkit.getServer().getPlayer(args[0]), instigator);
         }
 
         try {
-            plugin.updateScoreForPlayer(instigator, 1);
+            plugin.updateScoreForPlayer(instigator, earnedScore);
         } catch (Exception e) {
             Logger.getLogger("Minecraft").log(Level.INFO, e.getMessage());
         }
+
         return true;
     }
 
@@ -82,6 +86,12 @@ public class FartOnCommand extends BaseCommand {
         world.playSound(location, Sound.GHAST_SCREAM2, 100, pitch);
 
         addFartOnEffect(victim);
+
+        try {
+            plugin.updateDeathsForPlayer(victim, 1);
+        } catch (Exception e) {
+            Logger.getLogger("Minecraft").log(Level.INFO, e.getMessage());
+        }
     }
 
     /**
