@@ -43,6 +43,7 @@ public final class ScoreboardListener extends BaseListener {
                 }
             } catch (Exception e) {
                 plugin.getLogger().log(Level.INFO, "Couldnt broadcast streak message");
+                plugin.getLogger().log(Level.INFO, e.toString());
             }
         }
     }

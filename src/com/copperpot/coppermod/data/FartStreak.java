@@ -59,7 +59,7 @@ public enum FartStreak {
             case GODLIKE:
                 return "%s is " + ChatColor.RED + "GODLIKE!";
             case BEYOND_GODLIKE:
-                return "%s is " + ChatColor.MAGIC + " BEYOND GODLIKE!" + ChatColor.WHITE + " SOMEONE FART ON THEM!!";
+                return "%s is " + ChatColor.RED + " BEYOND GODLIKE!" + ChatColor.WHITE + " SOMEONE FART ON THEM!!";
         }
 
         return null;
