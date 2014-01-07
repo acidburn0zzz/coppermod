@@ -1,11 +1,11 @@
 package com.copperpot.coppermod.command;
 
-import com.copperpot.coppermod.CopperMod;
-import com.copperpot.coppermod.effects.FartOnEffect;
+import com.copperpot.coppermod.effect.FartOnEffect;
 import com.copperpot.coppermod.event.FartOnEvent;
 import com.copperpot.coppermod.utils.Strings;
 import org.bukkit.*;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
@@ -14,19 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class FartOnCommand extends BaseCommand {
-
-    public FartOnCommand(CopperMod plugin) {
-        super(plugin);
-    }
-
+public class FartOnCommand implements CommandExecutor {
     /**
-     * Handle the /farton command
-     * @param sender
-     * @param command
-     * @param s
-     * @param args
-     * @return boolean
+     * Delivers a flatulent cloud of justice to the specified targets
      */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
@@ -49,16 +39,18 @@ public class FartOnCommand extends BaseCommand {
     }
 
     /**
-     * Fart on multiple players
-     * @param victims
-     * @param instigator
+     * Broadcast the fart messages, smite the victims, and call a FartOnEvent
+     * @param victims The ones who smelled it
+     * @param instigator The one who dealt it
      */
     private void fartOn(List<Player> victims, Player instigator) {
+        String victimLabel = victims.get(0).getName();
+
         if (victims.size() > 1) {
-            broadcastFart(String.format(Strings.FART_EVERYONE, instigator.getName(), Strings.getFartTerm()));
-        } else {
-            broadcastFart(String.format(Strings.FART_ONE, instigator.getName(), Strings.getFartTerm(), victims.get(0).getName()));
+            victimLabel = "everyone";
         }
+
+        broadcastFart(String.format(Strings.FART_ONE, instigator.getName(), Strings.getFartTerm(), victimLabel));
 
         for (Player victim : victims) {
             smite(victim);
@@ -67,8 +59,7 @@ public class FartOnCommand extends BaseCommand {
     }
 
     /**
-     * Smite someone with a fart
-     * @param victim
+     * Smite a Player with a fart
      */
     private void smite(Player victim) {
         float pitch = 0 + (2.0f - 0) * new Random().nextFloat();
@@ -84,7 +75,6 @@ public class FartOnCommand extends BaseCommand {
 
     /**
      * Let everyone know a fart happened.
-     * @param msg
      */
     private void broadcastFart(String msg) {
         Bukkit.broadcastMessage(ChatColor.GREEN + msg);
@@ -92,7 +82,6 @@ public class FartOnCommand extends BaseCommand {
 
     /**
      * Add a farted on status effect.
-     * @param player
      */
     private void addFartOnEffect(Player player) {
         player.addPotionEffect(new FartOnEffect(PotionEffectType.CONFUSION, 100, 0, true), true);

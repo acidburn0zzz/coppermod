@@ -1,4 +1,4 @@
-package com.copperpot.coppermod.effects;
+package com.copperpot.coppermod.effect;
 
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;

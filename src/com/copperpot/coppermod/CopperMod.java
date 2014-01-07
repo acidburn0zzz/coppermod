@@ -14,20 +14,18 @@ public final class CopperMod extends JavaPlugin {
     /**
      * Global scoreboard for record keeping
      */
-    private Scoreboard scoreboard;
+    public static Scoreboard scoreboard = new Scoreboard();
 
+    /**
+     * Register all listeners and command executors when plugin is enabled
+     */
     @Override
     public void onEnable() {
-        scoreboard = new Scoreboard();
-        Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new ScoreboardListener(), this);
 
-        getCommand("farton").setExecutor(new FartOnCommand(this));
-        getCommand("fartscore").setExecutor(new FartScoreCommand(this));
-        getCommand("autolocate").setExecutor(new AutoLocateCommand(this));
-    }
-
-    public Scoreboard getScoreboard() {
-        return scoreboard;
+        getCommand("farton").setExecutor(new FartOnCommand());
+        getCommand("fartscore").setExecutor(new FartScoreCommand());
+        getCommand("autolocate").setExecutor(new AutoLocateCommand());
     }
 
     public void log(String message) {

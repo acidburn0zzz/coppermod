@@ -7,8 +7,9 @@ import java.util.HashMap;
 public class Scoreboard extends HashMap<String, PlayerScore> {
 
     /**
-     * Return a string of formatted PlayerScore entries
-     * @return String
+     * Loop through the scoreboard values and concatenate all the player score strings
+     *
+     * @return 'Player x has y kills and z deaths ...'
      */
     @Override
     public String toString() {
@@ -22,9 +23,10 @@ public class Scoreboard extends HashMap<String, PlayerScore> {
     }
 
     /**
-     * Retrieve a PlayerScore by Player
-     * @param player
-     * @return PlayerScore
+     * Get the PlayerScore object for a target Player
+     *
+     * @param player The target player
+     * @return The PlayerScore object for target player
      */
     public PlayerScore getByPlayer(Player player) {
         return this.get(player.getName());
